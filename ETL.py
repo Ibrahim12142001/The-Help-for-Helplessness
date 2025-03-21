@@ -57,8 +57,8 @@ def process_video(
 
         # Extract and save frames
         for i, t in enumerate(times):
-            frame = processed_clip.get_frame(t)  # Returns an RGB array
-            # Convert RGB (MoviePy) to BGR (OpenCV) if you want consistent color handling
+            frame = processed_clip.get_frame(t)  
+            # Convert RGB (MoviePy) to BGR (OpenCV) 
             frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
             frame_filename = os.path.join(output_dir, f"frame_{i:03d}.jpg")
@@ -66,7 +66,6 @@ def process_video(
 
         print(f"[INFO] Processed and saved {total_frames} frames for {input_video_path} -> {output_dir}")
 
-        # Close clips to free resources
         clip.close()
         processed_clip.close()
 
@@ -79,23 +78,19 @@ def main():
     Main function to iterate through the three folders and process all video clips.
     Adjust paths as needed for your specific environment.
     """
-    # Adjust these paths for your setup
+    
     desktop_path = os.path.expanduser("~/Desktop")
     project_folder = os.path.join(desktop_path, "CMPT_419_project")
 
-    # The three subfolders containing the video clips
     subfolders = ["extreme-helpless", "little_helplessness", "no-helpless"]
 
-    # Output base path (you can store frames in the same project folder or elsewhere)
     output_base_path = os.path.join(project_folder, "processed_frames")
 
-    # Create the output base folder if it doesn't exist
     os.makedirs(output_base_path, exist_ok=True)
 
-    # Parameters
-    desired_duration = 3.0  # final clip length in seconds
-    resize_dim = (224, 224) # width x height
-    fps = 30                # frames per second -> 90 frames total over 3 seconds
+    desired_duration = 3.0  
+    resize_dim = (224, 224) 
+    fps = 30                
 
     # Iterate over each subfolder
     for subfolder in subfolders:
