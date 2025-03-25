@@ -30,16 +30,18 @@ class HelplessnessClassifier(nn.Module):
     def __init__(self, input_channels=3):
         super(HelplessnessClassifier, self).__init__()
 
+        # Sequence of 3D Convolutions
         self.cnn = nn.Sequential(
-            # first 3D convolution layer
             Conv3DBlock(in_channels=input_channels, out_channels=64, double=False),
-            Conv3DBlock(in_channels=64, out_channels=128, double=True),
-            Conv3DBlock(in_channels=128, out_channels=256, double=True),
-            Conv3DBlock(in_channels=256, out_channels=512, double=True),
+            Conv3DBlock(in_channels=64, out_channels=128, double=False),
+            Conv3DBlock(in_channels=128, out_channels=256, double=False),
+            Conv3DBlock(in_channels=256, out_channels=512, double=False),
         )
 
+        # Final avg pool downsampling before fully connected layer
         self.avg_pool = nn.AdaptiveAvgPool3d(2)
 
+        # Fully connected layer for classification
         self.fc = nn.Sequential(
             nn.Linear(in_features=4096, out_features=512),
             nn.ReLU(inplace=True),

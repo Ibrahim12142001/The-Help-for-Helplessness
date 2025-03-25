@@ -50,7 +50,7 @@ class TransformableSequenceSubset(Dataset):
         
         # Convert the sequence from list of tensors to (sequence_length, channels, height, width) tensor
         sequence = torch.stack(sequence)
-        sequence = torch.transpose(sequence, 0, 1)
+        sequence = torch.transpose(sequence, 0, 1) # REMOVE THIS IF YOU NEED THE SEQUENCE_LENGTH AND CHANNELS DIMENSIONS SWITCHED!
         # Need to transpose the sequence_length and channels for our model to use 3D Convolutions
 
         # Retrieve the level of helplessness label from path of video
