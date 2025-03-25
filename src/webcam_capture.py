@@ -2,13 +2,11 @@
 # SOURCE: https://pypi.org/project/opencv-python/
 
 # Imports
-import os
 import cv2
 import threading
 import time
 
 # Constants
-SAVE_DIRECTORY = "webcam_data"
 CAPTURE_TIME = 3
 FRAMERATE = 30
 PROCESS_DELAY = 2
@@ -49,12 +47,6 @@ def capture_frames():
             start_time = time.time()
             temp_buffer = []
 
-            # Create subdirectory for frames
-            timestamp = time.strftime("%Y%m%d-%H%M%S")
-            save_subdir = os.path.join(SAVE_DIRECTORY, f"session_{timestamp}")
-            os.makedirs(save_subdir, exist_ok=True)
-            num_frames = 0
-
             # Capture three seconds worth of frames
             while time.time() - start_time < CAPTURE_TIME:
                 ret, frame = capture.read()
@@ -62,11 +54,6 @@ def capture_frames():
                     print("WARNING: Failed to capture a frame")
                     break
                 temp_buffer.append(frame)
-
-                # Save current frame to current save subdirectory
-                filename = os.path.join(save_subdir, f"frame_{num_frames}.jpg")
-                cv2.imwrite(filename, frame)
-                num_frames += 1
 
                 delay = 1.0 / FRAMERATE
                 time.sleep(delay)
