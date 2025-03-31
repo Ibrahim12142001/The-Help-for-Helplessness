@@ -9,7 +9,7 @@ import torch
 import torch.nn.functional as F
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classifier_model')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classifier_model', 'ibrahim')))
 from model import HelplessnessClassifier
 
 # Constants
@@ -17,11 +17,13 @@ CAPTURE_TIME = 3
 FRAMERATE = 30
 PROCESS_DELAY = 2
 NUM_CLASSES = 3
-MODEL_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'classifier_model', 'grayscale_cnn_lstm.pth')
+MODEL_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'classifier_model', 'ibrahim', 'grayscale_cnn_lstm.pth')
 
 buffer = []
 buffer_lock = threading.Lock()
 stop_event = threading.Event()
+
+CLASS_LABELS = ["No Helplessness", "Little Helplessness", "Extreme Helplessness"]
 
 # Load model and set to evaluation mode
 model = HelplessnessClassifier(num_classes=NUM_CLASSES)
@@ -59,9 +61,11 @@ def process_frames():
                 prediction = model(input_tensor)
                 prediction = F.softmax(prediction, dim=1)
 
-            print(f"Prediction: {prediction}")
-            time.sleep(PROCESS_DELAY)
+            predicted_class_idx = torch.argmax(prediction, dim=1).item()
+            predicted_label = CLASS_LABELS[predicted_class_idx]
 
+            print(f"Prediction: {predicted_label}, ({prediction[0][predicted_class_idx]:.4f} confidence)")
+            time.sleep(PROCESS_DELAY)
 
 def capture_frames():
     """Continuously capture frames from webcam every three seconds"""
