@@ -197,6 +197,13 @@ def capture_frames():
                 if not ret:
                     print("WARNING: Failed to capture a frame")
                     break
+
+                # Show live webcam feed
+                cv2.imshow('Live Webcam Feed', frame)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    stop_event.set()
+                    break
+
                 temp_buffer.append(frame)
                 time.sleep(1.0 / FRAMERATE)
 
