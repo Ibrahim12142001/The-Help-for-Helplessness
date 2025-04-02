@@ -1,15 +1,12 @@
 import cv2
 import threading
 import time
-import sys
 import os
 # MPS fallback for unimplemented ops:
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 import torch
 import torch.nn.functional as F
 import numpy as np
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from classifier_model.cnn_2d_model.model import HelplessnessClassifier as GrayscaleClassifier
 from classifier_model.cnn_3d_model.model import HelplessnessClassifier as RGBClassifier
 
@@ -17,15 +14,8 @@ from classifier_model.cnn_3d_model.model import HelplessnessClassifier as RGBCla
 ################################################
 # Constants / Paths
 ################################################
-model_2d_path = os.path.join(
-    os.path.dirname(__file__),
-    "..", "classifier_model", "cnn_2d_model", "grayscale_cnn_lstm.pth"
-)
-model_3d_path = os.path.join(
-    os.path.dirname(__file__),
-    "..", "classifier_model", "cnn_3d_model", "model_weights.pth"
-)
-
+model_2d_path = "classifier_model/cnn_2d_model/grayscale_cnn_lstm.pth"
+model_3d_path = "classifier_model/cnn_3d_model/model_weights.pth"
 MODEL_ONE = "2d_cnn"
 MODEL_TWO = "3d_cnn"
 NUM_FRAMES = 90
@@ -170,10 +160,8 @@ def process_frames(update_prediction_label):
             confidence = probs[0][pred_idx].item()
             label_str = f"Prediction: {pred_label} ({confidence:.3f} confidence)"
             print(label_str)
-            # Update the GUI or console
+            # Update the GUI
             update_prediction_label(label_str)
-
-            time.sleep(PROCESS_DELAY)
 
 ################################################
 # capture_frames

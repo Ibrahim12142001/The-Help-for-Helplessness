@@ -1,13 +1,14 @@
 from webcam_capture import capture_frames, stop_event, process_frames, set_model
 import threading
 import tkinter as tk
+import sys
 
 # Label Constants
 TITLE = "Helplessness Classifier"
 SELECT_MODEL_LABEL = "Select Model:"
 MODEL_ONE_LABEL = "2D CNN + LSTM (Grayscale)"
 MODEL_TWO_LABEL = "3D CNN (RGB)"
-STOP_LABEL = "Stop Program"
+EXIT_LABEL = "Exit Program"
 PREDICTION_LABEL = "Prediction: "
 FONT = "Roboto"
 MODEL_ONE = "2d_cnn"
@@ -15,11 +16,12 @@ MODEL_TWO = "3d_cnn"
 
 webcam_thread = None
 processing_thread = None
+window = None
 
 def initialize_gui():
     """Initialize GUI to facilitate program"""
     # SOURCE: https://realpython.com/python-gui-tkinter/
-    global prediction_label, model_label
+    global prediction_label, model_label, window
 
     # Initialize tkinter window
     window = tk.Tk()
@@ -43,10 +45,10 @@ def initialize_gui():
         command=lambda: start_capture(MODEL_TWO),
         width=25
     )
-    btn_stop = tk.Button(btn_frame, text=STOP_LABEL, command=stop_capture, width=25)
+    btn_exit = tk.Button(btn_frame, text=EXIT_LABEL, command=stop_capture, width=25)
     btn_model_one.grid(row=0, column=0, pady=5)
     btn_model_two.grid(row=1, column=0, pady=5)
-    btn_stop.grid(row=2, column=0, pady=5)
+    btn_exit.grid(row=2, column=0, pady=5)
 
     # Display prediction result:
     prediction_label = tk.Label(window, text=PREDICTION_LABEL, font=(FONT, 12, "bold"))
@@ -74,12 +76,15 @@ def start_capture(model_type):
         processing_thread.start()
 
 def stop_capture():
-    """Stop webcam capture and processing threads"""
+    """Stop webcam capture and processing threads, exit program"""
     stop_event.set()
     if webcam_thread:
         webcam_thread.join()
     if processing_thread:
         processing_thread.join()
+
+    window.quit()
+    sys.exit()
 
 def update_prediction_label(prediction):
     """Update prediction label to the GUI screen"""
