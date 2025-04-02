@@ -1,14 +1,15 @@
 import cv2
 import threading
 import time
+import sys
 import os
 # MPS fallback for unimplemented ops:
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 import torch
 import torch.nn.functional as F
-
 import numpy as np
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from classifier_model.cnn_2d_model.model import HelplessnessClassifier as GrayscaleClassifier
 from classifier_model.cnn_3d_model.model import HelplessnessClassifier as RGBClassifier
 
