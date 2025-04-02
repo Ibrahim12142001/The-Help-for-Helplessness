@@ -1,4 +1,4 @@
-import torch
+# 3D CNN Model
 import torch.nn as nn
 from torchinfo import summary
 
