@@ -1,4 +1,4 @@
-import torch
+# 3D CNN Model
 import torch.nn as nn
 from torchinfo import summary
 
@@ -32,18 +32,22 @@ class HelplessnessClassifier(nn.Module):
 
         # Sequence of 3D Convolutions
         self.cnn = nn.Sequential(
-            Conv3DBlock(in_channels=input_channels, out_channels=64, double=False),
+            Conv3DBlock(in_channels=input_channels, out_channels=32, double=True),
+            Conv3DBlock(in_channels=32, out_channels=64, double=False),
             Conv3DBlock(in_channels=64, out_channels=128, double=False),
             Conv3DBlock(in_channels=128, out_channels=256, double=False),
-            Conv3DBlock(in_channels=256, out_channels=512, double=False),
+            # Conv3DBlock(in_channels=256, out_channels=512, double=False),
         )
 
         # Final avg pool downsampling before fully connected layer
-        self.avg_pool = nn.AdaptiveAvgPool3d(2)
+        self.avg_pool = nn.AdaptiveAvgPool3d(4)
 
         # Fully connected layer for classification
         self.fc = nn.Sequential(
-            nn.Linear(in_features=4096, out_features=512),
+            nn.Linear(in_features=256*4*4*4, out_features=1024),
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.5),
+            nn.Linear(in_features=1024, out_features=512),
             nn.ReLU(inplace=True),
             nn.Dropout(0.5),
             nn.Linear(512, 3)

@@ -21,19 +21,7 @@ class HelplessnessVideoDataset(Dataset):
         return len(self.video_folders)
     
     def __getitem__(self, index):
-        return self.video_folders[index]
-
-# this brilliant idea comes from: https://stackoverflow.com/questions/51782021/how-to-use-different-data-augmentation-for-subsets-in-pytorch
-class TransformableSequenceSubset(Dataset):
-    def __init__(self, subset, transform=None):
-        self.subset = subset
-        self.transform = transform
-
-    def __len__(self):
-        return len(self.subset)
-    
-    def __getitem__(self, index):
-        video_path = self.subset[index]
+        video_path = self.video_folders[index]
 
         # Each video is a sequence of frames, so need to get each frame
         frame_files = sorted(os.listdir(video_path))
