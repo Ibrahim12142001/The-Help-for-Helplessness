@@ -12,6 +12,7 @@ import numpy as np
 
 from classifier_model.cnn_2d_model.model import HelplessnessClassifier as GrayscaleClassifier
 from classifier_model.cnn_3d_model.model import HelplessnessClassifier as RGBClassifier
+from classifier_model.pre_trained_transformer_model.model import create_swin3d_t_model_inference
 
 ############################################
 # Constants and Globals
@@ -20,11 +21,13 @@ TITLE = "Helplessness Classifier"
 SELECT_MODEL_LABEL = "Select Model:"
 MODEL_ONE_LABEL = "2D CNN + LSTM (Grayscale)"
 MODEL_TWO_LABEL = "3D CNN (RGB)"
+MODEL_THREE_LABEL = "Pre-trained SwinTransformer (RGB)"
 EXIT_LABEL = "Exit Program"
 PREDICTION_LABEL = "Prediction: "
 FONT = "Roboto"
 MODEL_ONE = "2d_cnn"
 MODEL_TWO = "3d_cnn"
+MODEL_THREE = "pre_trained"
 
 NUM_FRAMES = 90
 FRAMERATE = 30
@@ -33,6 +36,7 @@ CLASS_LABELS = ["No Helplessness", "Little Helplessness", "Extreme Helplessness"
 
 model_2d_path = "classifier_model/cnn_2d_model/grayscale_cnn_lstm.pth"
 model_3d_path = "classifier_model/cnn_3d_model/model_weights.pth"
+model_pre_trained_path = "classifier_model/pre_trained_transformer_model/model_weights.pth"
 
 buffer = []
 buffer_lock = threading.Lock()
@@ -69,10 +73,16 @@ def set_model(model_choice):
         model_path = model_2d_path
         device = torch.device("mps" if torch.backends.mps.is_available() else
                               "cuda" if torch.cuda.is_available() else "cpu")
-    else:
+    elif model_choice == MODEL_TWO:
         # 3D CNN for RGB
         current_model = RGBClassifier()
         model_path = model_3d_path
+        device = torch.device("mps" if torch.backends.mps.is_available() else
+                              "cuda" if torch.cuda.is_available() else "cpu")
+    elif model_choice == MODEL_THREE:
+        # Pre-trained SwinTransformer for RGB
+        current_model = create_swin3d_t_model_inference()
+        model_path = model_pre_trained_path
         device = torch.device("mps" if torch.backends.mps.is_available() else
                               "cuda" if torch.cuda.is_available() else "cpu")
     # Load weights and set model to eval mode
@@ -86,7 +96,7 @@ def preprocess_frames(frames):
     Preprocess frames depending on the selected model.
     2D => convert to grayscale, resize to 112x112, normalize with mean=0.5 and std=0.5,
           reshape to (1, T, 1, 112,112)
-    3D => convert BGR to RGB, resize to 224x224, shape => (1, 3, T, 224,224)
+    3D, Pre-trained => convert BGR to RGB, resize to 224x224, shape => (1, 3, T, 224,224)
     """
     global model_type, device
     if model_type == MODEL_ONE:
@@ -105,7 +115,7 @@ def preprocess_frames(frames):
         arr = np.expand_dims(arr, axis=0)
         tensor_frames = torch.tensor(arr, dtype=torch.float32).to(device)
         return tensor_frames
-    else:
+    else: # also works for transformer model
         mean = np.array([0.41500069, 0.36530493, 0.33830512], dtype=np.float32)
         std  = np.array([0.29042152, 0.27499218, 0.27738131], dtype=np.float32)
         processed = []
@@ -216,11 +226,18 @@ def initialize_gui():
         command=lambda: start_capture(MODEL_TWO),
         width=25
     )
+    btn_model_three = tk.Button(
+        btn_frame,
+        text=MODEL_THREE_LABEL,
+        command=lambda: start_capture(MODEL_THREE),
+        width=25
+    )
     btn_exit = tk.Button(btn_frame, text=EXIT_LABEL, command=stop_capture, width=25)
     
     btn_model_one.grid(row=0, column=0, pady=5)
     btn_model_two.grid(row=1, column=0, pady=5)
-    btn_exit.grid(row=2, column=0, pady=5)
+    btn_model_three.grid(row=2, column=0, pady=5)
+    btn_exit.grid(row=3, column=0, pady=5)
     
     prediction_label = tk.Label(window, text=PREDICTION_LABEL, font=(FONT, 12, "bold"))
     prediction_label.pack(pady=(20, 10))
@@ -251,6 +268,8 @@ def start_capture(model_type_choice):
         update_model_label(f"Model: {MODEL_ONE_LABEL}")
     elif model_type_choice == MODEL_TWO:
         update_model_label(f"Model: {MODEL_TWO_LABEL}")
+    elif model_type_choice == MODEL_THREE:
+        update_model_label(f"Model: {MODEL_THREE_LABEL}")
     
     if not webcam_thread or not webcam_thread.is_alive():
         webcam_thread = threading.Thread(target=capture_frames, daemon=True)
