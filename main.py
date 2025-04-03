@@ -24,6 +24,7 @@ MODEL_TWO_LABEL = "3D CNN (RGB)"
 MODEL_THREE_LABEL = "Pre-trained SwinTransformer (RGB)"
 EXIT_LABEL = "Exit Program"
 PREDICTION_LABEL = "Prediction: "
+PROBABILITY_TITLE = "Class Probabilities:"
 FONT = "Roboto"
 MODEL_ONE = "2d_cnn"
 MODEL_TWO = "3d_cnn"
@@ -156,12 +157,20 @@ def process_frames(update_prediction_label):
             pred_label = CLASS_LABELS[pred_idx]
             confidence = probs[0][pred_idx].item()
             summary_str = f"Prediction: {pred_label} ({confidence:.3f} confidence)"
-            detailed_str = (f"No Helplessness: {probs[0][0]:.3f}, "
-                            f"Little Helplessness: {probs[0][1]:.3f}, "
-                            f"Extreme Helplessness: {probs[0][2]:.3f} | "
+            no_helplessness_str = f"No Helplessness: {probs[0][0]:.3f}"
+            little_helplessness_str = f"Little Helplessness: {probs[0][1]:.3f}"
+            extreme_helplessness_str = f"Extreme Helplessness: {probs[0][2]:.3f}"
+            detailed_str = (f"{no_helplessness_str}, "
+                            f"{little_helplessness_str}, "
+                            f"{extreme_helplessness_str} | "
                             f"Selected: {pred_label} ({confidence:.3f})")
             print(detailed_str)
-            update_prediction_label(summary_str)
+            update_prediction_label(
+                summary_str, 
+                no_helplessness_str, 
+                little_helplessness_str, 
+                extreme_helplessness_str
+            )
 
 def capture_frames():
     """
@@ -196,16 +205,19 @@ def capture_frames():
 ############################################
 window = None
 prediction_label = None
+no_prob_label = None
+little_prob_label = None
+extreme_prob_label = None
 model_label = None
 webcam_thread = None
 processing_thread = None
 
 def initialize_gui():
     """Initialize the Tkinter GUI and start the main loop."""
-    global prediction_label, model_label, window
+    global no_prob_label, little_prob_label, extreme_prob_label, prediction_label, model_label, window
     window = tk.Tk()
     window.title(TITLE)
-    window.geometry("500x300")
+    window.geometry("500x400")
     
     model_label = tk.Label(window, text=SELECT_MODEL_LABEL, font=(FONT, 15, "bold"))
     model_label.pack(pady=(20, 10))
@@ -239,8 +251,17 @@ def initialize_gui():
     btn_model_three.grid(row=2, column=0, pady=5)
     btn_exit.grid(row=3, column=0, pady=5)
     
+    # Add the prediction label and class probabilities
     prediction_label = tk.Label(window, text=PREDICTION_LABEL, font=(FONT, 12, "bold"))
     prediction_label.pack(pady=(20, 10))
+    prob_title = tk.Label(window, text=PROBABILITY_TITLE, font=(FONT, 12, "bold"))
+    prob_title.pack(pady=0)
+    no_prob_label = tk.Label(window, text="", font=(FONT, 12, "bold"))
+    no_prob_label.pack(pady=0)
+    little_prob_label = tk.Label(window, text="", font=(FONT, 12, "bold"))
+    little_prob_label.pack(pady=0)
+    extreme_prob_label = tk.Label(window, text="", font=(FONT, 12, "bold"))
+    extreme_prob_label.pack(pady=0)
     
     # Schedule the OpenCV window update to run in the main thread
     window.after(0, update_live_frame)
@@ -289,9 +310,12 @@ def stop_capture():
     window.quit()
     sys.exit()
 
-def update_prediction_label(prediction):
-    """Update the prediction label on the GUI."""
+def update_prediction_label(prediction, no_prob_string, little_prob_string, extreme_prob_string):
+    """Update the prediction label and class probabilities on the GUI."""
     prediction_label.config(text=f"{prediction}")
+    no_prob_label.config(text=f"{no_prob_string}")
+    little_prob_label.config(text=f"{little_prob_string}")
+    extreme_prob_label.config(text=f"{extreme_prob_string}")
 
 def update_model_label(text):
     """Update the model label on the GUI."""
