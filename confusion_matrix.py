@@ -12,12 +12,12 @@ from sklearn.metrics import confusion_matrix as sk_confusion_matrix
 from sklearn.metrics import ConfusionMatrixDisplay
 
 # 1
-from classifier_model.CNN_LSTM_dataset import HelplessnessVideoDataset, TransformableSequenceSubset
-from classifier_model.CNN_LSTM_model import HelplessnessClassifier
+# from classifier_model.CNN_LSTM_dataset import HelplessnessVideoDataset
+# from classifier_model.CNN_LSTM_model import HelplessnessClassifier
 
 # 2
-# from classifier_model.dataset import HelplessnessVideoDataset
-# from classifier_model.cnn_3d_model.model import HelplessnessClassifier
+from classifier_model.dataset import HelplessnessVideoDataset
+from classifier_model.cnn_3d_model.model import HelplessnessClassifier
 
 # 3
 # from classifier_model.dataset import HelplessnessVideoDataset
@@ -26,20 +26,16 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    val_dir = "data/val"
-    val_base = HelplessnessVideoDataset(val_dir)
-
     val_transform = transforms.Compose([
-        transforms.Resize((112, 112)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5], std=[0.5])
+        transforms.Normalize([0.41500069, 0.36530493, 0.33830512], [0.29042152, 0.27499218, 0.27738131])
     ])
 
-    val_dataset = TransformableSequenceSubset(val_base, transform=val_transform)
-    val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=0)
+    val_dataset = HelplessnessVideoDataset("data/val", transform=val_transform)
+    val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True, num_workers=4)
 
     model = HelplessnessClassifier()
-    model.load_state_dict(torch.load('classifier_model/grayscale_cnn_lstm.pth', map_location=device), strict=False)
+    model.load_state_dict(torch.load('classifier_model/cnn_3d_model/model_weights.pth.pth', map_location=device), strict=False)
     model.to(device)
     model.eval()
 

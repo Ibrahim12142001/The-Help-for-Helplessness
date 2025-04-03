@@ -18,9 +18,10 @@ class HelplessnessVideoDataset(Dataset):
                 ...
     Returns folder paths for each video clip.
     """
-    def __init__(self, root_dir):
+    def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
         self.video_folders = []
+        self.transform = transform  # Store transform parameter
 
         categories = ['extreme-helpless', 'little_helplessness', 'no-helpless']
         for category in categories:
@@ -37,29 +38,11 @@ class HelplessnessVideoDataset(Dataset):
         return len(self.video_folders)
 
     def __getitem__(self, index):
-        return self.video_folders[index]
-
-
-class TransformableSequenceSubset(Dataset):
-    """
-    Loads frames, converts to grayscale (1-channel),
-    applies the same random transform to every frame in that video,
-    stacks frames into a tensor of shape (T, 1, H, W),
-    and returns (sequence, label).
-    """
-    def __init__(self, subset, transform=None):
-        self.subset = subset
-        self.transform = transform
-
-    def __len__(self):
-        return len(self.subset)
-
-    def __getitem__(self, index):
-        video_path = self.subset[index]
+        video_path = self.video_folders[index]
         frame_files = sorted(os.listdir(video_path))
         sequence = []
 
-        # We need to ensure the same random transform is applied to all frames in the clip.
+        # We need to ensure the same random transform is applied to all frames in that video.
         seed = random.randint(0, 99999)
         for frame_name in frame_files:
             frame_path = os.path.join(video_path, frame_name)
@@ -68,13 +51,13 @@ class TransformableSequenceSubset(Dataset):
             if self.transform:
                 random.seed(seed)
                 torch.manual_seed(seed)
-                frame = self.transform(frame)
+                frame = self.transform(frame)  # Apply the transform
             sequence.append(frame)
 
         # Stack frames: resulting shape (T, 1, H, W)
         sequence = torch.stack(sequence, dim=0)
 
-        # Get the label from folder names 
+        # Get the label from folder names
         path_parts = video_path.split(os.sep)
         category = path_parts[-2]
         label_map = {
@@ -84,4 +67,3 @@ class TransformableSequenceSubset(Dataset):
         }
         label = label_map.get(category, -1)
         return sequence, label
-
