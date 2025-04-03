@@ -26,7 +26,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    val_dir = r"C:\Users\offic\OneDrive\Documents\GitHub\CMPT_419_ML_Project\data\val"
+    val_dir = "data/val"
     val_base = HelplessnessVideoDataset(val_dir)
 
     val_transform = transforms.Compose([
@@ -39,7 +39,7 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=0)
 
     model = HelplessnessClassifier()
-    model.load_state_dict(torch.load(r'C:\Users\offic\OneDrive\Documents\GitHub\CMPT_419_ML_Project\classifier_model\grayscale_cnn_lstm.pth', map_location=device), strict=False)
+    model.load_state_dict(torch.load('classifier_model/grayscale_cnn_lstm.pth', map_location=device), strict=False)
     model.to(device)
     model.eval()
 
