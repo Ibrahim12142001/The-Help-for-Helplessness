@@ -23,7 +23,7 @@ from classifier_model.cnn_3d_model.model import HelplessnessClassifier
 # from classifier_model.dataset import HelplessnessVideoDataset
 
 def main():
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
     print(f"Using device: {device}")
 
     val_transform = transforms.Compose([
@@ -35,7 +35,7 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True, num_workers=4)
 
     model = HelplessnessClassifier()
-    model.load_state_dict(torch.load('classifier_model/cnn_3d_model/model_weights.pth.pth', map_location=device), strict=False)
+    model.load_state_dict(torch.load('classifier_model/cnn_3d_model/model_weights.pth', map_location=device), strict=False)
     model.to(device)
     model.eval()
 
