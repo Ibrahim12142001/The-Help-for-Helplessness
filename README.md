@@ -25,9 +25,9 @@ CMPT_419_ML_Project/
 │   ├── pre_trained_transformer_model/
 │   │   └── model.py                     # SwinTransformer3D model (uses Torchvision's weights)
 │   │
-│   ├── dataset.py                       # Generic video dataset loader
-│   ├── find_mean_std.py                # Utility to compute mean and std of dataset
-│   └── training.ipynb                  # General training loop (can be adapted)
+│   ├── dataset.py                       # Dataset loader for 3D model
+│   ├── find_mean_std.py                # Utility to compute mean and std of dataset used for 3D model
+│   └── training.ipynb                  # Notebook for training 3D CNN model
 │
 ├── data/                                # Training/validation frame data (processed)
 │   ├── train/
@@ -44,7 +44,7 @@ CMPT_419_ML_Project/
 ├── .DS_Store                            # macOS system file (safe to delete)
 │
 ├── main.py                              # GUI with model selection + live webcam prediction
-├── webcam_capture.py                    # Model inference + preprocessing pipeline
+├── webcam_capture.py                    # Model inference + preprocessing pipeline (old) used as code reference (can be deleted) 
 ├── ETL.py                               # Extract-Transform-Load script to preprocess raw videos
 ├── confusion_matrix.py                  # Model evaluation using confusion matrix + metrics
 ├── requirements.txt                     # Required packages
@@ -91,7 +91,7 @@ git lfs install
 
 ## Running the Application
 
-### Train a Model
+### Train a Model yourself (not neccesary for running the apllication but if you would like to train it yourself)
 
 #### Option 1: Train the 2D CNN + LSTM (Grayscale)
 
