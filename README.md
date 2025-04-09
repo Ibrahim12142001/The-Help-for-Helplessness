@@ -238,7 +238,6 @@ This section reflects on how our project went compared to what we originally pro
 - We tested our code on **macOS (MPS)** and **Windows (CPU/GPU)**.
 - Model weights are stored using **Git LFS** (please install it to get full repo).
 - If anything fails, the GUI or models will fall back to CPU automatically.
-- The code is well-structured and separated by model type — each file and function is commented and modular.
 
 
 ## Reproducibility Notes
