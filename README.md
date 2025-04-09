@@ -69,53 +69,82 @@ cd CMPT_419_ML_Project
 
 ---
 
+
 ### 2. Install Dependencies
 
-Make sure you have Python 3.11+ and `pip` installed.
-
-Install the packages listed in `requirements.txt`:
+Ensure you're using Python 3.10+.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-#### ➕ Git LFS Support
+### 3. Additional Requirements
 
-We use [Git Large File Storage](https://git-lfs.com/) for storing model weights and large files:
+- **Git LFS** is required to pull large model weights:
+  ```bash
+  git lfs install
+  ```
 
-```bash
-git lfs install
-```
+- **ffmpeg** is required by `moviepy` for video processing:
+  ```bash
+  # On Mac (Homebrew)
+  brew install ffmpeg
+
+  # On Ubuntu
+  sudo apt install ffmpeg
+  ```
 
 ---
 
-## Running the Application
+## How to Run
 
-### Train a Model yourself (not neccesary for running the apllication but if you would like to train it yourself)
+### Launch the GUI Application
 
-#### Option 1: Train the 2D CNN + LSTM (Grayscale)
+```bash
+python main.py
+```
+
+Features:
+- Real-time webcam feed
+- Select between 3 models (2D CNN, 3D CNN, SwinTransformer)
+- Class probabilities + inference time display
+- Works on macOS (MPS), CUDA, or CPU
+
+---
+
+### Train the Grayscale 2D CNN + LSTM
 
 ```bash
 jupyter notebook classifier_model/cnn_2d_model/CNN_LSTM_training.ipynb
 ```
 
-Make sure your `train/` and `val/` sets are inside `data/`.
-
-#### Option 2: Train 3D CNN
-
-Use `classifier_model/training.ipynb` and point to `cnn_3d_model/model.py`.
+Uses `data/train` and `data/val` folders for training.
 
 ---
 
-### Preprocess Raw Videos (ETL)
+### Train the 3D CNN (RGB)
 
-This will convert `.mp4` or `.mov` videos into resized frames for training.
+```bash
+jupyter notebook classifier_model/training.ipynb
+```
+
+Uses `classifier_model/dataset.py` for data loading.
+
+---
+
+### Preprocess Video Clips (Optional)
 
 ```bash
 python ETL.py
 ```
 
-Outputs are saved to `processed_frames/`.
+Converts raw videos in:
+```
+extreme-helpless/
+little_helplessness/
+no-helpless/
+```
+...into 90-frame sequences under `processed_frames/`.
 
 ---
 
@@ -125,91 +154,103 @@ Outputs are saved to `processed_frames/`.
 python confusion_matrix.py
 ```
 
-This loads the 3D model (by default), runs on the validation set, and plots the confusion matrix with precision, recall, and F1.
-
----
-
-### Run the Live GUI
-
-```bash
-python main.py
-```
-
-The GUI allows you to:
-
-- Select between:
-  - **2D CNN + LSTM (Grayscale)**
-  - **3D CNN (RGB)**
-  - **Pre-trained Swin Transformer (RGB)**
-- See **real-time webcam feed**
-- Display:
-  - **Prediction label**
-  - **Probabilities for each class**
-  - **Inference time per window**
-
-Press **`q`** to close the webcam feed.
+Outputs:
+- Confusion matrix (matplotlib)
+- Precision, Recall, F1, Accuracy
 
 ---
 
 ## Model Architectures
 
-### 2D CNN + LSTM
+### Grayscale 2D CNN + LSTM
 
 - Input: (B, T, 1, 112, 112)
-- CNN: 3 conv blocks
-- LSTM: 1 layer, hidden dim = 128
-- Output: 3-class classification
+- Three conv layers → LSTM → FC
+- Output: 3 classes
 
-### 3D CNN
+### RGB 3D CNN
 
 - Input: (B, 3, T, 224, 224)
-- 4 stacked 3D Conv blocks
-- Final FC after global pooling
+- 4 x 3D Conv blocks → GlobalAvgPool → FC layers
 
-### SwinTransformer3D
+### Pre-trained SwinTransformer3D
 
-- TorchVision pre-trained model
-- Input: RGB sequence
-- Output: 3-class classification
+- Based on `torchvision.models.video.swin3d_t`
+- Inference-only model using transfer learning
 
 ---
 
-## Data Structure
+## Self-Evaluation & Reflection
 
-### Raw Video Data
-
-```
-extreme-helpless/
-little_helplessness/
-no-helpless/
-```
-
-Each folder contains `.mp4` or `.mov` files.
+This section reflects on how our project went compared to what we originally proposed, what we added or changed, and any challenges or future ideas we had while working on the project.
 
 ---
 
-### After Preprocessing
+### What We Planned vs. What We Did
 
-```
-processed_frames/
-├── extreme-helpless/
-│   └── <video_name>/frame_000.jpg ...
-├── little_helplessness/
-├── no-helpless/
-```
+| Objective                                 | Status       | Notes                                                                 |
+|------------------------------------------|--------------|-----------------------------------------------------------------------|
+| Build 2D CNN + LSTM model (grayscale)    | ✅ Completed | Trained on preprocessed grayscale frame sequences                     |
+| Build 3D CNN model (RGB)                 | ✅ Completed | Implemented with 3D conv layers and temporal depth                    |
+| Real-time webcam GUI with model selector | ✅ Completed | Supports live prediction for all 3 models                             |
+| Data preprocessing pipeline              | ✅ Completed | Extracted consistent-length frame sequences from all raw videos       |
+| Pre-trained transformer model            | ✅ Added      | We added SwinTransformer3D (not part of original proposal)            |
 
 ---
 
-### Final Dataset Split
+### Changes and Improvements
 
-```
-data/
-├── train/
-│   └── <class>/<video_name>/frame_*.jpg
-├── val/
-```
+- **Added a third model** (SwinTransformer3D) to compare performance with pre-trained weights.
+- Switched from OpenCV to `tkinter` for GUI to make it work cross-platform (macOS & Windows).
+- Improved the GUI to show:
+  - Real-time class probabilities
+  - Inference time per batch
+  - Live webcam feed alongside predictions
+- Built a consistent preprocessing pipeline (ETL) to make sure every model received the correct input format.
 
-This is the data fed into the models.
+---
+
+### Things We Could Have Done (Future Improvements)
+
+- **Dimensionality Reduction**  
+  We could have reduced frame sequence size or feature dimensions before feeding into the models:
+  - Using PCA (Principal Component Analysis) on frame features
+  - Using Autoencoders for noise reduction
+  - Would improve training speed, especially for 3D CNNs and LSTMs
+
+- **Motion-Aware Cropping**  
+  We thought about using frame differencing or optical flow to crop to areas with movement — this could help the model focus more on the subject's body language.
+
+- **Synthetic Data Generation**  
+  Our dataset was relatively small and imbalanced. With more time, we could have:
+  - Added synthetic data 
+  - Mixed frame sequences to simulate "in-between" helplessness
+
+- **Model Optimization**  
+  Training took a long time on some systems:
+  - In the future, converting models to ONNX or pruning them would help run them faster on edge devices or in production.
+
+---
+
+### Notes for the TA
+
+- We tested our code on **macOS (MPS)** and **Windows (CPU/GPU)**.
+- Model weights are stored using **Git LFS** (please install it to get full repo).
+- If anything fails, the GUI or models will fall back to CPU automatically.
+- The code is well-structured and separated by model type — each file and function is commented and modular.
+
+
+## Reproducibility Notes
+
+We have organized our code, datasets, and training pipelines to be reproducible.  
+All scripts can be run as-is if the directory structure is preserved.  
+
+Models can also be re-trained from scratch using the training notebooks.
+
+If any issues occur due to `.DS_Store` or macOS artifacts, simply delete them:
+```bash
+find . -name '.DS_Store' -delete
+```
 
 ---
 
