@@ -53,7 +53,7 @@ CMPT_419_ML_Project/
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repo
 
@@ -62,7 +62,7 @@ git clone git@github.sfu.ca:irehman/CMPT_419_ML_Project.git
 cd CMPT_419_ML_Project
 ```
 
-> ⚠️ If you face a checkout error like `.DS_Store would be overwritten`, remove it before cloning:
+> If you face a checkout error like `.DS_Store would be overwritten`, remove it before cloning:
 > ```bash
 > rm .DS_Store
 > ```
@@ -89,9 +89,9 @@ git lfs install
 
 ---
 
-## 🚀 Running the Application
+## Running the Application
 
-### 🧠 Train a Model
+### Train a Model
 
 #### Option 1: Train the 2D CNN + LSTM (Grayscale)
 
@@ -107,7 +107,7 @@ Use `classifier_model/training.ipynb` and point to `cnn_3d_model/model.py`.
 
 ---
 
-### 🎥 Preprocess Raw Videos (ETL)
+### Preprocess Raw Videos (ETL)
 
 This will convert `.mp4` or `.mov` videos into resized frames for training.
 
@@ -119,7 +119,7 @@ Outputs are saved to `processed_frames/`.
 
 ---
 
-### 📊 Evaluate Model (Confusion Matrix)
+### Evaluate Model (Confusion Matrix)
 
 ```bash
 python confusion_matrix.py
@@ -129,7 +129,7 @@ This loads the 3D model (by default), runs on the validation set, and plots the 
 
 ---
 
-### 🖥️ Run the Live GUI
+### Run the Live GUI
 
 ```bash
 python main.py
@@ -151,22 +151,22 @@ Press **`q`** to close the webcam feed.
 
 ---
 
-## 🧪 Model Architectures
+## Model Architectures
 
-### ✅ 2D CNN + LSTM
+### 2D CNN + LSTM
 
 - Input: (B, T, 1, 112, 112)
 - CNN: 3 conv blocks
 - LSTM: 1 layer, hidden dim = 128
 - Output: 3-class classification
 
-### ✅ 3D CNN
+### 3D CNN
 
 - Input: (B, 3, T, 224, 224)
 - 4 stacked 3D Conv blocks
 - Final FC after global pooling
 
-### ✅ SwinTransformer3D
+### SwinTransformer3D
 
 - TorchVision pre-trained model
 - Input: RGB sequence
@@ -174,7 +174,7 @@ Press **`q`** to close the webcam feed.
 
 ---
 
-## 🗂️ Data Structure
+## Data Structure
 
 ### Raw Video Data
 
@@ -213,15 +213,17 @@ This is the data fed into the models.
 
 ---
 
-## 🧠 Author
+## Author
 
 **Ibrahim Rehman**  
+**Greg Parent**
+**Daniel Nguyen**  
 Course: CMPT 419 — Machine Learning  
 Simon Fraser University
 
 ---
 
-## 📌 Notes
+## Notes
 
 - All models use 3-class classification: `No`, `Little`, `Extreme` helplessness.
 - You must have `ffmpeg` installed for MoviePy to work.
