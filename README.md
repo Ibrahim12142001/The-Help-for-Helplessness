@@ -215,8 +215,8 @@ This is the data fed into the models.
 
 ## Author
 
-**Ibrahim Rehman: irehman@sfu.ca**  
-**Greg Parent: gparent@sfu.ca**
+**Ibrahim Rehman: irehman@sfu.ca**,
+**Greg Parent: gparent@sfu.ca**,
 **Daniel Nguyen: dvn1@sfu.ca**  
 Course: CMPT 419 — Machine Learning  
 Simon Fraser University
@@ -230,4 +230,3 @@ Simon Fraser University
 - Supports both macOS and Windows (with MPS or CUDA if available).
 
 ---
-```
