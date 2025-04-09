@@ -219,12 +219,12 @@ This section reflects on how our project went compared to what we originally pro
   - Would improve training speed, especially for 3D CNNs and LSTMs
 
 - **Motion-Aware Cropping**  
-  We thought about using frame differencing or optical flow to crop to areas with movement — this could help the model focus more on the subject's body language.
+  We thought about using frame differencing or optical flow to crop to areas with movement, which could potentially help the model focus more on the subject's body language.
 
 - **Synthetic Data Generation**  
   Our dataset was relatively small and imbalanced. With more time, we could have:
   - Added synthetic data 
-  - Mixed frame sequences to simulate "in-between" helplessness
+  - Simply collected more data
 
 - **Model Optimization**  
   Training took a long time on some systems:
@@ -264,10 +264,3 @@ Simon Fraser University
 
 ---
 
-## Notes
-
-- All models use 3-class classification: `No`, `Little`, `Extreme` helplessness.
-- You must have `ffmpeg` installed for MoviePy to work.
-- Supports both macOS and Windows (with MPS or CUDA if available).
-
----
