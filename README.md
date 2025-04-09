@@ -217,7 +217,6 @@ This is the data fed into the models.
 
 **Ibrahim Rehman**  
 **Greg Parent**
-
 **Daniel Nguyen**  
 Course: CMPT 419 — Machine Learning  
 Simon Fraser University
