@@ -20,6 +20,7 @@ CMPT_419_ML_Project/
 │   │
 │   ├── cnn_3d_model/
 │   │   ├── model.py                     # 3D CNN model
+│   │   ├── training.ipynb               # Notebook for training 3D CNN model
 │   │   └── model_weights.pth            # Trained 3D CNN weights
 │   │
 │   ├── pre_trained_transformer_model/
@@ -28,6 +29,7 @@ CMPT_419_ML_Project/
 │   │
 │   ├── dataset.py                       # Dataset loader for 3D model
 │   ├── find_mean_std.py                # Utility to compute mean and std of dataset used for 3D model
+│   ├── cross_validation.ipynb          # Notebook for running cross-validation on our models
 │   └── training.ipynb                  # Notebook for training 3D CNN model
 │
 ├── data/                                # Training/validation frame data (processed)
