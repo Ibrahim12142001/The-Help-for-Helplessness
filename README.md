@@ -113,26 +113,6 @@ Features:
 
 ---
 
-### Train the Grayscale 2D CNN + LSTM
-
-```bash
-jupyter notebook classifier_model/cnn_2d_model/CNN_LSTM_training.ipynb
-```
-
-Uses `data/train` and `data/val` folders for training.
-
----
-
-### Train the 3D CNN (RGB)
-
-```bash
-jupyter notebook classifier_model/training.ipynb
-```
-
-Uses `classifier_model/dataset.py` for data loading.
-
----
-
 ### Preprocess Video Clips (Optional)
 
 ```bash
@@ -146,6 +126,26 @@ little_helplessness/
 no-helpless/
 ```
 ...into 90-frame sequences under `processed_frames/`.
+
+---
+
+### Train the Grayscale 2D CNN + LSTM (Optional)
+
+```bash
+jupyter notebook classifier_model/cnn_2d_model/CNN_LSTM_training.ipynb
+```
+
+Uses `data/train` and `data/val` folders for training.
+
+---
+
+### Train the 3D CNN (RGB) (Optional)
+
+```bash
+jupyter notebook classifier_model/training.ipynb
+```
+
+Uses `classifier_model/dataset.py` for data loading.
 
 ---
 
