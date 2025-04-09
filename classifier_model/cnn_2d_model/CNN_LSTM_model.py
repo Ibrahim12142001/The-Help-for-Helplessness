@@ -1,6 +1,11 @@
 # 2D CNN + LSTM model using grayscale
+
 import torch
 import torch.nn as nn
+
+# adapted from: https://github.com/HHTseng/video-classification
+# adapted from: https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/
+# adapted from: https://pyimagesearch.com/2021/07/19/pytorch-training-your-first-convolutional-neural-network-cnn/
 
 class HelplessnessClassifier(nn.Module):
     """

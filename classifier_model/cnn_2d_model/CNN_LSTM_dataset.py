@@ -4,6 +4,8 @@ from PIL import Image
 import os
 import random
 
+
+# adapted from: https://github.com/RaivoKoot/Video-Dataset-Loading-Pytorch
 class HelplessnessVideoDataset(Dataset):
     """
     Reads directory structure:
