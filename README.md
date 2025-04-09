@@ -170,7 +170,7 @@ Press **`q`** to close the webcam feed.
 
 - TorchVision pre-trained model
 - Input: RGB sequence
-- Output: 3-class logits
+- Output: 3-class classification
 
 ---
 
