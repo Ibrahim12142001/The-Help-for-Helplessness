@@ -75,36 +75,36 @@ def process_video(
 
 def main():
     """
-    Main function to iterate through the three folders and process all video clips.
-    Adjust paths as needed for your specific environment.
+    Processes all raw videos in each class folder and stores extracted frames 
+    into the `processed_frames/` directory relative to the project root.
     """
-    
-    desktop_path = os.path.expanduser("~/Desktop")
-    project_folder = os.path.join(desktop_path, "CMPT_419_project")
+    # locate the project directory
+    project_root = os.path.abspath(os.path.dirname(__file__))
 
+    # Class folders with raw .mp4 files
     subfolders = ["extreme-helpless", "little_helplessness", "no-helpless"]
 
-    output_base_path = os.path.join(project_folder, "processed_frames")
-
+    # Output folder to store extracted frames
+    output_base_path = os.path.join(project_root, "processed_frames")
     os.makedirs(output_base_path, exist_ok=True)
 
-    desired_duration = 3.0  
-    resize_dim = (224, 224) 
-    fps = 30                
+    # Video processing parameters
+    desired_duration = 3.0  # seconds
+    resize_dim = (224, 224) # final frame size
+    fps = 30                # frames per second
 
-    # Iterate over each subfolder
+    # Iterate through each class subfolder
     for subfolder in subfolders:
-        folder_path = os.path.join(project_folder, subfolder)
+        folder_path = os.path.join(project_root, subfolder)
 
         if not os.path.isdir(folder_path):
-            print(f"[WARNING] Folder {folder_path} does not exist. Skipping.")
+            print(f"[WARNING] Folder '{folder_path}' not found. Skipping.")
             continue
 
-        # Process each video file in the subfolder
         for file_name in os.listdir(folder_path):
-            # Check if file_name is a video by extension
             if file_name.lower().endswith((".mp4", ".mov", ".avi", ".mkv")):
                 input_video_path = os.path.join(folder_path, file_name)
+
                 process_video(
                     input_video_path=input_video_path,
                     output_base_path=output_base_path,
@@ -113,6 +113,7 @@ def main():
                     resize_dim=resize_dim,
                     fps=fps
                 )
+
 
 if __name__ == "__main__":
     main()
