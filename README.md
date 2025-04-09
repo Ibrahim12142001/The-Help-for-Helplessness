@@ -71,7 +71,7 @@ cd CMPT_419_ML_Project
 
 ### 2. Install Dependencies
 
-Make sure you have Python 3.9+ and `pip` installed.
+Make sure you have Python 3.11+ and `pip` installed.
 
 Install the packages listed in `requirements.txt`:
 
