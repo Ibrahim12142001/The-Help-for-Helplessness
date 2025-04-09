@@ -25,6 +25,7 @@ CMPT_419_ML_Project/
 │   ├── pre_trained_transformer_model/
 │   │   └── model.py                     # SwinTransformer3D model (uses Torchvision's weights)
 │   │   └── pretrained.ipynb             # Notebook for training SwinTransformer3D model
+│   │
 │   ├── dataset.py                       # Dataset loader for 3D model
 │   ├── find_mean_std.py                # Utility to compute mean and std of dataset used for 3D model
 │   └── training.ipynb                  # Notebook for training 3D CNN model
