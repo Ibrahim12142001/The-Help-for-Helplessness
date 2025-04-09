@@ -1,6 +1,6 @@
 # CMPT_419_ML_Project
 
-# Helplessness Classifier (CMPT 419 ML Project)
+# The Help for Helplessness 
 
 This project classifies levels of helplessness in video data using multiple deep learning models, including a 2D CNN + LSTM, a 3D CNN, and a pre-trained SwinTransformer3D. It includes full preprocessing, training pipelines, and a live webcam-based GUI for real-time inference.
 
