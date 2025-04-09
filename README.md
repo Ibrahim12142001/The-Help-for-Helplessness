@@ -218,7 +218,7 @@ This is the data fed into the models.
 **Ibrahim Rehman: irehman@sfu.ca**,
 **Greg Parent: gparent@sfu.ca**,
 **Daniel Nguyen: dvn1@sfu.ca**  
-Course: CMPT 419 — Machine Learning  
+Course: CMPT 419/724 - Affective Computing
 Simon Fraser University
 
 ---
