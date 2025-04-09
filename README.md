@@ -6,7 +6,7 @@ This project classifies levels of helplessness in video data using multiple deep
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 CMPT_419_ML_Project/
