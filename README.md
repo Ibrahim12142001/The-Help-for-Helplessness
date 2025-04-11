@@ -48,7 +48,6 @@ CMPT_419_ML_Project/
 ├── .DS_Store                            # macOS system file (safe to delete)
 │
 ├── main.py                              # GUI with model selection + live webcam prediction
-├── webcam_capture.py                    # Model inference + preprocessing pipeline (old) used as code reference (can be deleted) 
 ├── ETL.py                               # Extract-Transform-Load script to preprocess raw videos
 ├── confusion_matrix.py                  # Model evaluation using confusion matrix + metrics
 ├── cohen_kappa_rating_sheet.csv         # Dataset inter-rater agreement ratings
