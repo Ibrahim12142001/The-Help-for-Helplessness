@@ -47,7 +47,6 @@ class HelplessnessVideoDataset(Dataset):
 
         # Retrieve the level of helplessness label from path of video
         split_path = video_path.split(os.sep)  # Changed '/' to os.sep for cross-platform compatibility
-        print(f"split_path: {split_path}")  # Add this for debugging
 
         # Ensure that split_path has at least 2 components
         if len(split_path) >= 2:

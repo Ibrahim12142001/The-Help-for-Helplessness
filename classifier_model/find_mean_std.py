@@ -1,14 +1,14 @@
 import torch
 import numpy as np
-from dataset import HelplessnessVideoDataset, TransformableSequenceSubset
+from dataset import HelplessnessVideoDataset
 from torchvision import transforms
 from tqdm import tqdm
 
 # this script is inspired by this sample code: https://gist.github.com/Huud/8e0823fa7be2dcd1bb9f3c418cb94c19
 
 # Load the full dataset to calculate the mean and std of our collected samples
-full_dataset = TransformableSequenceSubset(
-    subset=HelplessnessVideoDataset('../processed_frames'),
+full_dataset = HelplessnessVideoDataset(
+    root_dir='../processed_frames',
     transform=transforms.ToTensor()
 )
 
