@@ -235,7 +235,7 @@ This section reflects on how our project went compared to what we originally pro
 
 - **Model Optimization**  
   Training took a long time on some systems:
-  - In the future, converting models to ONNX or pruning them would help run them faster on edge devices or in production.
+  - In the future, converting models to ONNX or pruning them would help run them faster on edge devices or in production. [More information](https://neptune.ai/blog/deep-learning-model-optimization-methods)
 
 ---
 
