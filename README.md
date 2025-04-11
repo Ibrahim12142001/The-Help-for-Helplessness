@@ -51,6 +51,8 @@ CMPT_419_ML_Project/
 ├── webcam_capture.py                    # Model inference + preprocessing pipeline (old) used as code reference (can be deleted) 
 ├── ETL.py                               # Extract-Transform-Load script to preprocess raw videos
 ├── confusion_matrix.py                  # Model evaluation using confusion matrix + metrics
+├── cohen_kappa_rating_sheet.csv         # Dataset inter-rater agreement ratings
+├── cohen_kappa.py                       # Python script to calculate Cohen's Kappa for our inter-rater agreements
 ├── requirements.txt                     # Required packages
 └── README.md                            # ← You're here!
 ```
