@@ -24,8 +24,9 @@ CMPT_419_ML_Project/
 │   │   └── model_weights.pth            # Trained 3D CNN weights
 │   │
 │   ├── pre_trained_transformer_model/
-│   │   └── model.py                     # SwinTransformer3D model (uses Torchvision's weights)
-│   │   └── pretrained.ipynb             # Notebook for training SwinTransformer3D model
+│   │   ├── model.py                     # SwinTransformer3D model (uses Torchvision's weights)
+│   │   ├── pretrained.ipynb             # Notebook for training SwinTransformer3D model
+│   │   └── model_weights.pth            # Trained Swin Transformer weights
 │   │
 │   ├── dataset.py                       # Dataset loader for 3D model
 │   ├── find_mean_std.py                # Utility to compute mean and std of dataset used for 3D model
@@ -197,7 +198,8 @@ This section reflects on how our project went compared to what we originally pro
 | Build 3D CNN model (RGB)                 | ✅ Completed | Implemented with 3D conv layers and temporal depth                    |
 | Real-time webcam GUI with model selector | ✅ Completed | Supports live prediction for all 3 models                             |
 | Data preprocessing pipeline              | ✅ Completed | Extracted consistent-length frame sequences from all raw videos       |
-| Pre-trained transformer model            | ✅ Added      | We added SwinTransformer3D (not part of original proposal)            |
+| Dataset of short video clips             | ✅ Completed | Collected 200 samples covering all three levels of helplessness       |
+| Pre-trained transformer model            | ✅ Added     | We added SwinTransformer3D (not part of original proposal)            |
 
 ---
 
