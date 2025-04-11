@@ -199,6 +199,7 @@ This section reflects on how our project went compared to what we originally pro
 | Real-time webcam GUI with model selector | ✅ Completed | Supports live prediction for all 3 models                             |
 | Data preprocessing pipeline              | ✅ Completed | Extracted consistent-length frame sequences from all raw videos       |
 | Dataset of short video clips             | ✅ Completed | Collected 200 samples covering all three levels of helplessness       |
+| Evaluate our model performance + dataset | ✅ Completed | Calculated confusion matrices, accuracy and inter-rater agreement     |
 | Pre-trained transformer model            | ✅ Added     | We added SwinTransformer3D (not part of original proposal)            |
 
 ---
