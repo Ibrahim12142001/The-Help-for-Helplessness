@@ -1,9 +1,12 @@
 import torch
 import torch.nn as nn
+from matplotlib import pyplot as plt
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.models.video import swin3d_t, Swin3D_T_Weights
-from sklearn.metrics import cohen_kappa_score
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from sklearn.metrics import confusion_matrix as sk_confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
 from classifier_model.cnn_2d_model.CNN_LSTM_dataset import HelplessnessVideoDataset as Dataset_2D
 from classifier_model.cnn_2d_model.CNN_LSTM_model import HelplessnessClassifier as CNN_2D_Model
 from classifier_model.dataset import HelplessnessVideoDataset as Dataset_3D
@@ -41,6 +44,20 @@ def load_transformer_model(weights_path, device):
     model.to(device)
     model.eval()
     return model
+
+def generate_cm(true_labels, pred_labels):
+    cm = sk_confusion_matrix(true_labels, pred_labels)
+    cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['None', 'Little', 'Extreme'])
+    cm_display.plot(cmap='Blues')
+    plt.title("Confusion Matrix for Helplessness Dataset")
+    plt.xlabel("Prediction")
+    plt.ylabel("Actual")
+    plt.show()
+
+    print(f"Precision score: {precision_score(true_labels, pred_labels, average='weighted'):.2f}")
+    print(f"Recall score: {recall_score(true_labels, pred_labels, average='weighted'):.2f}")
+    print(f"F1 score: {f1_score(true_labels, pred_labels, average='weighted'):.2f}")
+    print(f"Accuracy score: {accuracy_score(true_labels, pred_labels):.2f}")
 
 def main():
     device = torch.device(
@@ -88,33 +105,14 @@ def main():
         device
     )
 
-    # Run Cohen's Kappa on the 3 models' predictions
-    _, preds_2d = validate(model_2d, val_loader_2d, device)
-    _, preds_3d = validate(model_3d, val_loader_3d, device)
-    _, preds_transformer = validate(model_transformer, val_loader_3d, device)
+    # Create confusion matrix for each model
+    true_labels_2d, preds_2d = validate(model_2d, val_loader_2d, device)
+    true_labels_3d, preds_3d = validate(model_3d, val_loader_3d, device)
+    true_labels_transformer, preds_transformer = validate(model_transformer, val_loader_3d, device)
 
-    kappa_one = cohen_kappa_score(preds_2d, preds_3d)
-    kappa_two = cohen_kappa_score(preds_2d, preds_transformer)
-    kappa_three = cohen_kappa_score(preds_3d, preds_transformer)
-    print(f"Cohen's Kappa score between 2D CNN + LSTM Model and 3D CNN Model: {kappa_one:.2f}")
-    print(f"Cohen's Kappa score between 2D CNN + LSTM Model and SwinTransformer Model: {kappa_two:.2f}")
-    print(f"Cohen's Kappa score between 3D CNN Model and SwinTransformer Model: {kappa_three:.2f}")
-
-    # Create confusion matrix for chosen model
-    # true_labels, pred_labels = validate()
-    #
-    # cm = sk_confusion_matrix(true_labels, pred_labels)
-    # cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['None', 'Little', 'Extreme'])
-    # cm_display.plot(cmap='Blues')
-    # plt.title("Confusion Matrix for Helplessness Dataset")
-    # plt.xlabel("Prediction")
-    # plt.ylabel("Actual")
-    # plt.show()
-    # 
-    # print(f"Precision score: {precision_score(true_labels, pred_labels, average='weighted'):.2f}")
-    # print(f"Recall score: {recall_score(true_labels, pred_labels, average='weighted'):.2f}")
-    # print(f"F1 score: {f1_score(true_labels, pred_labels, average='weighted'):.2f}")
-    # print(f"Accuracy score: {accuracy_score(true_labels, pred_labels):.2f}")
+    generate_cm(true_labels_2d, preds_2d)
+    generate_cm(true_labels_3d, preds_3d)
+    generate_cm(true_labels_transformer, preds_transformer)
 
 
 if __name__ == "__main__":
