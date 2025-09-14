@@ -2,7 +2,8 @@
 
 This project classifies levels of helplessness in video data using multiple deep learning models, including a 2D CNN + LSTM, a 3D CNN, and a pre-trained SwinTransformer3D. It includes full preprocessing, training pipelines, and a live webcam-based GUI for real-time inference.
 
-[CMPT419 Poster Presentation (2).pdf](https://github.com/user-attachments/files/22324332/CMPT419.Poster.Presentation.2.pdf)
+
+![CMPT419 Poster Presentation 2](https://github.com/user-attachments/assets/8b7167b8-66e7-49f3-85c7-3b3191cc0735)
 
 
 ---
