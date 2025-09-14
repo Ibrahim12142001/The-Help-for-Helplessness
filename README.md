@@ -1,10 +1,12 @@
-## The Help for Helplessness 
+# The Help for Helplessness 
 
 This project classifies levels of helplessness in video data using multiple deep learning models, including a 2D CNN + LSTM, a 3D CNN, and a pre-trained SwinTransformer3D. It includes full preprocessing, training pipelines, and a live webcam-based GUI for real-time inference.
 
-# Demo
+## Demo
 
 [Video Link](https://1sfu-my.sharepoint.com/:v:/g/personal/irehman_sfu_ca/EbD_vyXt3ntBqbRDpsFD6TsBmkA8T70m1cSRYyh9ukvmww?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=PetGg7)
+
+## Presentation
 
 ![CMPT419 Poster Presentation 2](https://github.com/user-attachments/assets/8b7167b8-66e7-49f3-85c7-3b3191cc0735)
 
